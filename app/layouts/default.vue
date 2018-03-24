@@ -1,52 +1,35 @@
-<template>
-  <div>
-    <nuxt/>
-  </div>
+<template lang="pug">
+  el-container()
+    el-header()
+      b-navbar(toggleable="md")
+        b-navbar-toggle(target="nav_collapse")
+        b-navbar-brand(to="dashboard") あにめちゃんねる
+        b-collapse#nav_collapse(is-nav)
+          b-navbar-nav
+            b-nav-item(to="dashboard") Dashboard
+            b-nav-item(to="events") Events
+          b-navbar-nav.ml-auto()
+            b-nav-item-dropdown(right)
+              template(slot="button-content")
+                em() User
+              b-dropdown-item(@click="signout") singout
+    el-main
+      nuxt
+    el-footer()
+      p(style="text-align: center; font-size: 12px;")
+        small() &copy; 2017 animeshi.ry-m.com
 </template>
 
 <style>
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
+
+<script>
+export default {
+  methods: {
+    signout () {
+      console.log('signout ')
+    }
+  }
+}
+</script>
+
