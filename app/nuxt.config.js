@@ -43,6 +43,7 @@ module.exports = {
   ],
   modules: [
     'bootstrap-vue/nuxt',
+    '~modules/typescript.js',
   ],
   css: [
     'element-ui/lib/theme-chalk/index.css',
