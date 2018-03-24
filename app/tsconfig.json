@@ -24,7 +24,8 @@
       "~/pages/*": ["./pages/*"],
       "~/plugins/*": ["./plugins/*"],
       "~/static/*": ["./static/*"],
-      "~/store/*": ["./store/*"]
+      "~/store/*": ["./store/*"],
+      "~/entities/*": ["./entities"]
     }
   }
 }

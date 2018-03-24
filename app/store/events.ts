@@ -1,18 +1,14 @@
 import Q from 'q'
 import { ActionContext } from 'vuex'
+import { EventsEntity, update } from '../entities/events';
 
-export type EventsState = {
-  rows: Array<Object>,
-}
-export type EventsActionContext = ActionContext<EventsState, EventsState>
+export type EventsActionContext = ActionContext<EventsEntity, EventsEntity>
 
-export const state = () => ({
-  rows: []
-})
+export const state = () => (new EventsEntity)
 
 export const mutations = {
-  save (state: EventsState, rows: any) {
-    state.rows = rows
+  save (state: EventsEntity, rows: any) {
+    update(state, rows)
   }
 }
 

@@ -30,10 +30,10 @@
         width = "120",
       )
         template(slot-scope="scope")
-          el-button(type="text", size="small") 詳細
+          el-button(type="text", size="small", @click="show(scope.row)") 詳細
 </template>
 
-<script>
+<script lang="ts">
 export default {
   fetch ({ store }) {
     return store.dispatch('events/fetch')
@@ -45,7 +45,10 @@ export default {
   },
   methods: {
     genRowClassName ({ row }) {
-      return row && row.state.type == 'finished' ? 'table-secondary' : ''
+      return row && row.isFinished ? 'table-secondary' : ''
+    },
+    show (event) {
+      this.$router.push({ name: 'events-id-information', params: { id: event.id } })
     }
   }
 }
