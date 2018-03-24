@@ -22,7 +22,7 @@ module.exports = {
   */
   build: {
     vendor: [
-      'element-ui'
+      'element-ui',
     ],
     /*
     ** Run ESLint on save
@@ -39,9 +39,12 @@ module.exports = {
     }
   },
   plugins: [
-    '~plugins/element-ui'
+    '~plugins/element-ui',
+  ],
+  modules: [
+    'bootstrap-vue/nuxt',
   ],
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
   ]
 }
