@@ -6,7 +6,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./app:/app/
-      - /app/node_modules
     restart: always
     depends_on: []
     links: []
@@ -14,6 +13,6 @@ services:
       - "3000:3000"
     environment:
       - HOST=0.0.0.0
-    command: yarn dev
+    command: "yarn dev"
     stdin_open: true
     tty: true
