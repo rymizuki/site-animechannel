@@ -1,17 +1,23 @@
 import Q from 'q'
+import { ActionContext } from 'vuex'
+
+export type EventsState = {
+  rows: Array<Object>,
+}
+export type EventsActionContext = ActionContext<EventsState, EventsState>
 
 export const state = () => ({
   rows: []
 })
 
 export const mutations = {
-  save (state, rows) {
+  save (state: EventsState, rows: any) {
     state.rows = rows
   }
 }
 
 export const actions = {
-  fetch ({ commit }) {
+  fetch ({ commit }: EventsActionContext) {
     return Q.when({
       data: [
         {
@@ -56,7 +62,7 @@ export const actions = {
         }
       ]
     })
-      .then(({ data }) => {
+      .then(({ data }: { data: any }) => {
         commit('save', data)
       })
   }
