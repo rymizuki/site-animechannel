@@ -20,6 +20,13 @@
 export default {
   layout: 'empty',
   components: {
+  },
+  methods: {
+    signup () {
+    },
+    signin () {
+      this.$router.push('/dashboard')
+    }
   }
 }
 </script>
