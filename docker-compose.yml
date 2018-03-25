@@ -27,6 +27,23 @@ services:
     stdin_open: true
     tty: true
 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/api/
+    restart: always
+    depends_on: []
+    links: []
+    ports:
+      - "3000"
+    environment:
+      - HOST=0.0.0.0
+    command: "yarn dev"
+    stdin_open: true
+    tty: true
+
 networks:
   default:
     external:
