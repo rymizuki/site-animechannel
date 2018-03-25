@@ -33,6 +33,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/api/
+      - ./var/log/express:/var/log/express
     restart: always
     depends_on: []
     links: []

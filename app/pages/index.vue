@@ -23,6 +23,7 @@ export default {
   },
   methods: {
     signup () {
+      location.href = '/auth/signup'
     },
     signin () {
       this.$router.push('/dashboard')
