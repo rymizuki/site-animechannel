@@ -1,5 +1,15 @@
 version: '3.4'
 services:
+  proxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./var/log/nginx:/var/log/nginx
+    restart: always
+
   app:
     build:
       context: ./app
@@ -10,9 +20,14 @@ services:
     depends_on: []
     links: []
     ports:
-      - "3000:3000"
+      - "3000"
     environment:
       - HOST=0.0.0.0
     command: "yarn dev"
     stdin_open: true
     tty: true
+
+networks:
+  default:
+    external:
+      name: animeshi 
