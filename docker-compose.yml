@@ -4,6 +4,7 @@ services:
     build:
       context: ./proxy
       dockerfile: Dockerfile
+    links: []
     ports:
       - "8080:80"
     volumes:
@@ -16,9 +17,11 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./app:/app/
+      - ./var/log/express:/var/log/express
     restart: always
     depends_on: []
-    links: []
+    links:
+      - api
     ports:
       - "3000"
     environment:
@@ -36,16 +39,29 @@ services:
       - ./var/log/express:/var/log/express
     restart: always
     depends_on: []
-    links: []
+    links:
+      - mysql
     ports:
       - "3000"
     environment:
       - HOST=0.0.0.0
+    env_file: ./.env
     command: "yarn dev"
     stdin_open: true
     tty: true
 
+  mysql:
+    image: mysql
+    links: []
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+    environment: {}
+    env_file: ./.env
+
 networks:
   default:
     external:
-      name: animeshi 
+      name: animeshi
