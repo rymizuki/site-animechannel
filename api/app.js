@@ -55,4 +55,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// load data-access-objects
+require('./dao')
+
 module.exports = app;
