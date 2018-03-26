@@ -3,15 +3,20 @@
     el-header()
       b-navbar(toggleable="md")
         b-navbar-toggle(target="nav_collapse")
-        b-navbar-brand(to="dashboard") あにめちゃんねる
+        b-navbar-brand(to="/dashboard") あにめちゃんねる
         b-collapse#nav_collapse(is-nav)
           b-navbar-nav
-            b-nav-item(to="dashboard") Dashboard
-            b-nav-item(to="events") Events
+            b-nav-item(to="/user/mizuki_r") Dashboard
+            b-nav-item(to="/events") Events
           b-navbar-nav.ml-auto()
-            b-nav-item-dropdown(right)
+            b-nav-item-dropdown(right v-if="user")
               template(slot="button-content")
-                em() User
+                em() {{user.username}}
+              b-dropdown-item(
+                v-for="menu in userMenus",
+                :key="menu.routeName",
+                :to="{name: menu.routeName, params: {username: user.username}}"
+              ) {{menu.label}}
               b-dropdown-item(@click="signout") singout
     el-main
       nuxt
@@ -24,10 +29,43 @@
 </style>
 
 <script>
+import { chain } from 'lodash'
+
 export default {
+  computed: {
+    auth () {
+      return this.$store.state.auth
+    },
+    user () {
+      return this.auth && this.auth.user
+    },
+    permissions () {
+      return this.auth && this.auth.permissions
+    },
+    userMenus () {
+      const labels = {
+        user_management: 'ユーザ管理',
+      }
+      const menus = chain(this.permissions)
+        .filter(({ name }) => {
+          return labels[name]
+        })
+        .map(({ name }) => {
+          return {
+            label: labels[name],
+            routeName: `user-username-${ name.replace(/_/g, '-') }`
+          }
+        })
+        .value()
+      return menus
+    }
+  },
   methods: {
     signout () {
-      console.log('signout ')
+      this.$store.dispatch('logout')
+        .then(() => {
+          this.$router.push('/')
+        })
     }
   }
 }
