@@ -4,18 +4,17 @@ const router = express.Router();
 const passport = require('passport')
 const TwitterStrategy = require('passport-twitter')
 
-const Passport = require('../schema/passport')
-const User = require('../schema/user')
+const authenticator = require('../services/authenticator')
 
 const consumerKey    = process.env.TWITTER_CONSUMER_KEY
 const consumerSecret = process.env.TWITTER_CONSUMER_SECRET
 
-passport.serializeUser(function(passport, done) {
-  done(null, passport);
+passport.serializeUser(function(user, done) {
+  done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log('deserialize user', user)
+  console.log('deserialize ', user)
   done(null, user);
 });
 
@@ -29,28 +28,19 @@ passport.use(new TwitterStrategy({
   //     検証成功 : return done(null,profile);
   //     検証失敗 : return done(null,false);
   //     例外発生 : return done(null);
-  Passport.findOne({ where: {
-    provider:    profile.provider,
-    providerId:  profile.id
-  } })
-    .then((_passport) => {
-      const passport = _passport || Passport.build()
-      passport.providerId   = profile.id
-      passport.provider     = profile.provider
-      passport.username     = profile.username
-      passport.displayName  = profile.displayName
-      passport.photo        = profile.photos[0].value
-      passport.save().then(() => {
-        return done(null, passport);
-      })
+  authenticator.authenticate(profile)
+    .then((authentication) => {
+      return done(null, { authentication });
     })
 }));
 
 /* GET home page. */
 router.get('/signup', passport.authenticate('twitter'));
 router.get('/callback', passport.authenticate('twitter', { failureRedirect: '/' }), function(req, res) {
-  console.log('session user', req.user.id)
-  res.redirect(`/user/${ req.user.username }`);
+  const authentication = req.user.authentication
+  console.log('session user', authentication.user)
+
+  return res.redirect(`/user/${ authentication.user.username }`);
 })
 
 module.exports = router;
