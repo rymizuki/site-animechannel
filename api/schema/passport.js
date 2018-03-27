@@ -40,5 +40,6 @@ const Passport = db.define('passport', {
 })
 
 Passport.hasOne(User)
+User.belongsTo(Passport)
 
 module.exports = Passport

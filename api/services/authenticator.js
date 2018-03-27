@@ -26,7 +26,11 @@ exports.authenticate = function ({ provider, id, username, displayName, photos }
       return User.findOne({
         where: { passportId: passport.id },
         include: [
-          { model: UserPermission, include: [ Permission ], },
+          {
+            model: UserPermission,
+            where: { enabled: true },
+            include: [ Permission ],
+          },
         ]
       })
         .then((user) => {
@@ -43,17 +47,19 @@ exports.authenticate = function ({ provider, id, username, displayName, photos }
           }
         })
         .then((user) => {
+          console.log(user)
           // db -> authentication entity
           return {
             user: {
               username:    passport.username,
               displayName: passport.displayName,
+              icon_url:    passport.photo,
             },
-            permissions: user.user_permissions.map((user_permission) => {
+            permissions: user.user_permissions ? user.user_permissions.map((user_permission) => {
               return {
                 name: user_permission.permission.name
               }
-            }),
+            }) : [],
           }
         })
     })

@@ -1,6 +1,7 @@
 const {
   INTEGER,
   STRING,
+  BOOLEAN,
 } = require('sequelize')
 const db = require('../dao/db')
 
@@ -12,6 +13,10 @@ const UserPermission = db.define('user_permission', {
     type: INTEGER,
     primaryKey: true,
     autoIncrement: true,
+  },
+  enabled: {
+    type: BOOLEAN,
+    defaultValue: 0,
   },
 }, {
   timestamp: true,
