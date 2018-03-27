@@ -45,6 +45,7 @@ export default {
     userMenus () {
       const labels = {
         user_management: 'ユーザ管理',
+        event_management: 'イベント管理',
       }
       const menus = chain(this.permissions)
         .filter(({ name }) => {
