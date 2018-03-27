@@ -3,7 +3,7 @@ const {
   DATE,
   BOOLEAN,
 } = require('sequelize')
-const db = require('../dao/db')
+const db = require('../infra/db')
 
 const Event = require('./event')
 

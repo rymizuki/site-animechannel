@@ -2,7 +2,7 @@ const {
   INTEGER,
   STRING,
 } = require('sequelize')
-const db = require('../dao/db')
+const db = require('../infra/db')
 
 const User = db.define('user', {
   id: {

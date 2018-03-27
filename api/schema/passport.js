@@ -3,7 +3,7 @@ const {
   STRING,
   ENUM,
 } = require('sequelize')
-const db = require('../dao/db')
+const db = require('../infra/db')
 
 const User = require('./user')
 

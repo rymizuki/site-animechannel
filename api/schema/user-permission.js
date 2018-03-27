@@ -3,7 +3,7 @@ const {
   STRING,
   BOOLEAN,
 } = require('sequelize')
-const db = require('../dao/db')
+const db = require('../infra/db')
 
 const User = require('./user')
 const Permission = require('./permission')

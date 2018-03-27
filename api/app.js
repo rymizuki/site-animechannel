@@ -56,6 +56,6 @@ app.use(function(err, req, res, next) {
 });
 
 // load data-access-objects
-require('./dao')
+require('./infra')
 
 module.exports = app;
