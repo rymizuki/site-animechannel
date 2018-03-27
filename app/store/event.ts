@@ -1,6 +1,6 @@
-import Q from 'q'
 import { ActionContext } from 'vuex'
 
+import http from '../utils/http'
 import { EventEntity, update } from '../entities/event'
 
 export type EventActionContext = ActionContext<EventEntity, EventEntity>
@@ -14,7 +14,9 @@ export const mutations = {
 }
 
 export const actions = {
-  fetch ({ commit }: EventActionContext) {
+  fetch ({ commit }: EventActionContext, { id }) {
+    return http.get(`/api/events/${ id }`)
+    /*
     return Q.when({
       data: {
         id: 1,
@@ -47,6 +49,7 @@ export const actions = {
         ],
       },
     })
+    */
       .then(({ data }: { data: any }) => {
         commit('save', data)
       })

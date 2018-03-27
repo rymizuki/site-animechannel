@@ -3,11 +3,11 @@
     el-header()
       b-navbar(toggleable="md")
         b-navbar-toggle(target="nav_collapse")
-        b-navbar-brand(to="/dashboard") あにめちゃんねる
+        b-navbar-brand(to="/") あにめちゃんねる
         b-collapse#nav_collapse(is-nav)
           b-navbar-nav
-            b-nav-item(to="/user/mizuki_r") Dashboard
-            b-nav-item(to="/events") Events
+            b-nav-item(:to="{ name: 'user-username', params: { username: user.username } }") Dashboard
+            b-nav-item(:to="{ name: 'user-username-events', params: { username: user.username } }") Events
           b-navbar-nav.ml-auto()
             b-nav-item-dropdown(right v-if="user")
               template(slot="button-content")

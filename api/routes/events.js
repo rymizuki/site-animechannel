@@ -16,6 +16,43 @@ function authorize (req, res, next) {
   return next()
 }
 
+function candidateDates (condition) {
+  const from = moment(condition.from)
+  const to   = moment(condition.to)
+  const diff = Math.ceil(to.diff(from, 'day', true))
+  return chain(diff)
+    .times()
+    .map((index) => from.clone().add(index, 'days'))
+    .filter((date) => {
+      if (condition.holiday) return true // 休日を含むなら常にtrue
+      if (date.isoWeekday() == 6) return false // 土曜日はfalse
+      if (date.isoWeekday() == 7) return false // 日曜日はfalse
+      return true // FIXME: 祝日
+    })
+    .map((date) => date.format('YYYY-MM-DD'))
+    .value()
+}
+
+const label = {
+  accepting: '受付中',
+  hold: '開催待ち',
+  fnished: '終了',
+}
+
+function buildEntity (event) {
+  return {
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    state: {
+      type: event.status,
+      name: label[event.status],
+    },
+    candidate_dates: candidateDates(event.event_condition),
+    participants: [] // TODO,
+  }
+}
+
 router.get('/', function (req, res, next) {
   Event.findAll({
     order: [
@@ -26,45 +63,23 @@ router.get('/', function (req, res, next) {
     ],
   })
     .then((events) => {
-      function candidateDates (condition) {
-        const from = moment(condition.from)
-        const to   = moment(condition.to)
-        const diff = Math.ceil(to.diff(from, 'day', true))
-        return chain(diff)
-          .times()
-          .map((index) => from.clone().add(index, 'days'))
-          .filter((date) => {
-            if (condition.holiday) return true // 休日を含むなら常にtrue
-            if (date.isoWeekday() == 6) return false // 土曜日はfalse
-            if (date.isoWeekday() == 7) return false // 日曜日はfalse
-            return true // FIXME: 祝日
-          })
-          .map((date) => date.format('YYYY-MM-DD'))
-          .value()
-      }
-
-      const label = {
-        accepting: '受付中',
-        hold: '開催待ち',
-        fnished: '終了',
-      }
-
-      return events.map((event) => {
-        return {
-          id: event.id,
-          title: event.title,
-          description: event.description,
-          state: {
-            type: event.status,
-            name: label[event.status],
-          },
-          candidate_dates: candidateDates(event.event_condition),
-          participants: [] // TODO,
-        }
-      })
+      return events.map((event) => buildEntity(event))
     })
     .then((events) => {
-      res.json(events)
+      return res.json(events)
+    })
+})
+
+router.get('/:id', function (req, res, next) {
+  Event.findOne({
+    where: { id: req.params.id },
+    include: [
+      EventCondition,
+    ]
+  })
+    .then((event) => buildEntity(event))
+    .then((event) => {
+      return res.json(event)
     })
 })
 

@@ -21,13 +21,16 @@ export default {
   data () {
     return {
       menus: [
-        { label: '概要', key: 'information', pathname: 'events-id-information' },
-        { label: '予定', key: 'acceptign', pathname: 'events-id-information-schedule' },
+        { label: '概要', key: 'information', pathname: 'user-username-events-id-information' },
+        { label: '予定', key: 'acceptign', pathname: 'user-username-events-id-information-schedule' },
         // { label: 'レポート', key: 'report', pathname: 'events-id-report' },
       ]
     }
   },
   computed: {
+    self () {
+      return this.$store.state.auth.user
+    },
     event () {
       return this.$store.state.event
     }
@@ -35,10 +38,22 @@ export default {
   methods: {
     show (vm) {
       const menu = this.menus[vm.index]
-      this.$router.push({ name: menu.pathname, params: { id: this.$route.params.id } })
+      this.$router.push({
+        name: menu.pathname,
+        params: {
+          username: this.self.username,
+          id: this.$route.params.id
+        }
+      })
     },
     joinus () {
-      this.$router.push({ name: 'events-id-join', params: { id: this.$route.params.id } })
+      this.$router.push({
+        name: 'user-username-events-id-join',
+        params: {
+          username: this.self.username,
+          id: this.$route.params.id
+        }
+      })
     }
   }
 }

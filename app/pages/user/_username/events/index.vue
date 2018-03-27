@@ -39,6 +39,9 @@ export default {
     return store.dispatch('events/fetch')
   },
   computed: {
+    self () {
+      return this.$store.state.auth.user
+    },
     events () {
       return this.$store.state.events.rows
     }
@@ -48,7 +51,13 @@ export default {
       return row && row.isFinished ? 'table-secondary' : ''
     },
     show (event) {
-      this.$router.push({ name: 'events-id-information', params: { id: event.id } })
+      this.$router.push({
+        name: 'user-username-events-id-information',
+        params: {
+          username: this.self.username,
+          id: event.id,
+        }
+      })
     }
   }
 }

@@ -46,6 +46,9 @@ export default {
     }
   },
   computed: {
+    self () {
+      return this.$store.state.auth.user
+    },
     event () {
       return this.$store.state.event
     },
@@ -62,7 +65,7 @@ export default {
           data,
         }
       })
-    }
+    },
   },
   methods: {
     toggleDate (date) {
@@ -88,15 +91,21 @@ export default {
       })
         .then(() => {
           this.$router.push({
-            name: 'events-id-information-schedule',
-            params: { id: this.event.id },
+            name: 'user-username-events-id-information-schedule',
+            params: {
+              username: this.self.username,
+              id: this.event.id,
+            },
           })
         })
     },
     onCancel () {
       this.$router.push({
-        name: 'events-id-information',
-        params: { id: this.event.id },
+        name: 'user-username-events-id-information',
+        params: {
+          username: this.self.username,
+          id: this.event.id
+        },
       })
     }
   }
