@@ -1,14 +1,19 @@
 <template lang="pug">
   div
-    el-row()
-      el-col(:span="24")
-        div(style="margin-top: 200px; height: 200px; line-height: 200px; text-align: center")
+    b-row()
+      b-col()
+        div(style="margin-top: 200px; height: 200px; text-align: center")
           h1() あにめちゃんねる
-    el-row(type="flex", justify="center")
-      el-col(:span="3", style="text-align: center")
-        el-button(type="primary", @click="signup") Sign-up
-      el-col(:span="3", style="text-align: center")
-        el-button(type="primary", plain, @click="signin") Sign-in
+          p アニメについて語らうプライベートコミュニティ
+    b-row(align-h="center", style="margin-bottom: 20px")
+      b-col.text-center(cols="3")
+        el-button(type="primary", @click="signup") Twitterで利用登録
+      b-col.text-center(cols="3")
+        el-button(type="primary", plain, @click="signup") Twitterでログイン
+    b-row()
+      b-col.text-center
+        p
+          small ※利用登録には管理者の承認が必要です。
 </template>
 
 <script>
