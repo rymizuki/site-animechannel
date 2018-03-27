@@ -28,7 +28,6 @@ exports.authenticate = function ({ provider, id, username, displayName, photos }
         include: [
           {
             model: UserPermission,
-            where: { enabled: true },
             include: [ Permission ],
           },
         ]
@@ -47,7 +46,6 @@ exports.authenticate = function ({ provider, id, username, displayName, photos }
           }
         })
         .then((user) => {
-          console.log(user)
           // db -> authentication entity
           return {
             user: {
@@ -55,11 +53,15 @@ exports.authenticate = function ({ provider, id, username, displayName, photos }
               displayName: passport.displayName,
               icon_url:    passport.photo,
             },
-            permissions: user.user_permissions ? user.user_permissions.map((user_permission) => {
-              return {
-                name: user_permission.permission.name
-              }
-            }) : [],
+            permissions: user.user_permissions ? user.user_permissions
+              .filter((user_permission) => {
+                return user_permission.enabled
+              })
+              .map((user_permission) => {
+                return {
+                  name: user_permission.permission.name
+                }
+              }) : [],
           }
         })
     })
