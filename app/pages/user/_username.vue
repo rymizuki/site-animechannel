@@ -5,12 +5,18 @@
 <script lang="ts">
 import { get } from 'lodash'
 export default {
-  fetch ({ store, redirect }) {
+  fetch ({ store, redirect, route }) {
     return store.dispatch('login')
       .then(() => {
-        if (!get(store.state, 'auth.user.username')) {
-          redirect('/')
+        const previous = window.sessionStorage && window.sessionStorage.getItem('previousPath')
+        if (previous) {
+          window.sessionStorage.removeItem('previousPath')
+          return redirect(previous)
         }
+      })
+      .catch(() => {
+        if (window.sessionStorage) window.sessionStorage.setItem('previousPath', route.fullPath)
+        redirect('/')
       })
   }
 }

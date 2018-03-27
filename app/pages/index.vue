@@ -16,9 +16,15 @@
 </template>
 
 <script>
+import { get } from 'lodash'
 
 export default {
   layout: 'empty',
+  fetch({ store, redirect }) {
+    if (get(store.state, 'auth.user.username')) {
+      return redirect(`/user/${ store.state.auth.user.username }`)
+    }
+  },
   components: {
   },
   methods: {

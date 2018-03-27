@@ -1,7 +1,10 @@
 import http from '../utils/http'
+import Q from 'q'
+
+import { get } from 'lodash'
 
 export const state = () => ({
-  auth: null
+  auth: null,
 })
 
 export const mutations = {
@@ -14,13 +17,17 @@ export const mutations = {
 }
 
 export const actions = {
-  login ({ commit }) {
+  login ({ commit }, route) {
     return http.get('/api/authentication')
       .then(({ data }) => {
-        commit('auth', data)
+        if (get(data, 'user.username') == null) {
+          return Q.reject()
+        } else {
+          return Q.resolve(data)
+        }
       })
-      .catch((error) => {
-        console.error(error)
+      .then((data) => {
+        commit('auth', data)
       })
   },
   logout ({ commit }) {

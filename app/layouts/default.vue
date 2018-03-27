@@ -5,7 +5,7 @@
         b-navbar-toggle(target="nav_collapse")
         b-navbar-brand(to="/") あにめちゃんねる
         b-collapse#nav_collapse(is-nav)
-          b-navbar-nav
+          b-navbar-nav(v-if="user")
             b-nav-item(:to="{ name: 'user-username', params: { username: user.username } }") Dashboard
             b-nav-item(:to="{ name: 'user-username-events', params: { username: user.username } }") Events
           b-navbar-nav.ml-auto()
