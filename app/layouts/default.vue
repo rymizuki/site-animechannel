@@ -17,7 +17,7 @@
                 :key="menu.routeName",
                 :to="{name: menu.routeName, params: {username: user.username}}"
               ) {{menu.label}}
-              b-dropdown-item(@click="signout") singout
+              b-dropdown-item(@click="signout") ログアウト
     el-main
       nuxt
     el-footer()
