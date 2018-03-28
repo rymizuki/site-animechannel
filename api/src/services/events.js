@@ -58,7 +58,7 @@ const Events = {
   },
   find (id) {
     return Event.findOne({
-      where: { id: req.params.id },
+      where: { id },
       include: [
         EventCondition,
       ]

@@ -1,5 +1,4 @@
-import Q from 'q'
-import { ActionContext } from 'vuex'
+import http from '../utils/http'
 
 export const state = () => ({
   result: { id: null }
@@ -13,9 +12,9 @@ export const mutations = {
 
 export const actions = {
   exec ({ commit }, { event, data }) {
-    return Q.when({ data: { id: 1 } })
-      .then(({ data }) => {
-        commit('result', data)
+    return http.post(`/api/events/${ event.id }`, data)
+      .then(() => {
+        commit('result', { id: event.id })
       })
   }
 }

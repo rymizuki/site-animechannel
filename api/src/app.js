@@ -8,7 +8,7 @@ var session = require('express-session')
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'pug');
 
 var fs = require('fs');
@@ -18,7 +18,7 @@ app.use(logger('dev', { stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 var sess = {
   secret: 'keyboard cat',
