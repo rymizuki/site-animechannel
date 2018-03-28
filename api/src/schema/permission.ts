@@ -1,8 +1,8 @@
-const {
+import {
   INTEGER,
   STRING,
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
 const Permission = db.define('permission', {
   id: {
@@ -27,4 +27,4 @@ Permission.sync().then(() => {
   ])
 })
 
-module.exports = Permission
+export default Permission

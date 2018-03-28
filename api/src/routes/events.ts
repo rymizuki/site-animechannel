@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const moment = require('moment')
+import moment from 'moment'
 
-const { get, find, chain } = require('lodash')
+import { get, find, chain } from 'lodash'
 
-const Events = require('../services/events')
+import Events from '../services/events'
 
 // authorize
 function authorize (req, res, next) {
@@ -38,4 +38,4 @@ router.post('/', authorize, function (req, res, next) {
     })
 })
 
-module.exports = router
+export default router

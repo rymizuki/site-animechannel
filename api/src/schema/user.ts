@@ -1,8 +1,8 @@
-const {
+import {
   INTEGER,
   STRING,
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
 const User = db.define('user', {
   id: {
@@ -15,4 +15,4 @@ const User = db.define('user', {
   freezeTableName: true,
 })
 
-module.exports = User
+export default User

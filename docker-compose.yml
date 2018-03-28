@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     links: []
     ports:
-      - "8080:80"
+      - "50200:80"
     volumes:
       - ./var/log/nginx:/var/log/nginx
     restart: always

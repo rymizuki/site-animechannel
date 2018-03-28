@@ -1,1 +1,1 @@
-module.exports = require('./src/app')
+module.exports = require('./lib/app').default

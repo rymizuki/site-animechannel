@@ -1,11 +1,11 @@
-const {
+import {
   INTEGER,
   STRING,
   TEXT,
   DATE,
   ENUM
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
 const Event = db.define('event', {
   id: {
@@ -35,4 +35,4 @@ const Event = db.define('event', {
   freezeTableName: true,
 })
 
-module.exports = Event
+export default Event

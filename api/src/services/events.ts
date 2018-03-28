@@ -1,9 +1,9 @@
-const moment = require('moment')
+import moment from 'moment'
 
-const { get, find, chain } = require('lodash')
+import { get, find, chain } from 'lodash'
 
-const Event = require('../schema/event')
-const EventCondition = require('../schema/event-condition')
+import Event from '../schema/event'
+import EventCondition from '../schema/event-condition'
 
 function candidateDates (condition) {
   const from = moment(condition.from)
@@ -42,7 +42,7 @@ function buildEntity (event) {
   }
 }
 
-const Events = {
+export default {
   list () {
     return Event.findAll({
       order: [
@@ -83,10 +83,5 @@ const Events = {
         return condition.save()
           .then(() => event)
       })
-      .then((event) => {
-        res.json({ id: event.id })
-      })
   }
 }
-
-module.exports = Events

@@ -1,27 +1,27 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
 
-const passport = require('passport')
-const TwitterStrategy = require('passport-twitter')
+import passport from 'passport'
+import TwitterStrategy from 'passport-twitter'
 
-const authenticator = require('../services/authenticator')
+import authenticator from '../services/authenticator'
 
 const consumerKey    = process.env.TWITTER_CONSUMER_KEY
 const consumerSecret = process.env.TWITTER_CONSUMER_SECRET
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user)
 });
 
 passport.deserializeUser(function(user, done) {
   console.log('deserialize ', user)
-  done(null, user);
-});
+  done(null, user)
+})
 
 passport.use(new TwitterStrategy({
   consumerKey,
   consumerSecret,
-  callbackURL: 'http://localhost:8080/auth/callback',
+  callbackURL: 'http://localhost:50200/auth/callback',
 }, function(token, tokenSecret, profile, done) {
   // 例えばtwitteridがDBの中に存在するかということを確認する
   // 検証結果によってdoneの書き方を以下のように指定する
@@ -30,9 +30,9 @@ passport.use(new TwitterStrategy({
   //     例外発生 : return done(null);
   authenticator.authenticate(profile)
     .then((authentication) => {
-      return done(null, { authentication });
+      return done(null, { authentication })
     })
-}));
+}))
 
 /* GET home page. */
 router.get('/signup', passport.authenticate('twitter'));
@@ -40,7 +40,7 @@ router.get('/callback', passport.authenticate('twitter', { failureRedirect: '/' 
   const authentication = req.user.authentication
   console.log('session user', authentication.user)
 
-  return res.redirect(`/user/${ authentication.user.username }`);
+  return res.redirect(`/user/${ authentication.user.username }`)
 })
 
-module.exports = router;
+export default router

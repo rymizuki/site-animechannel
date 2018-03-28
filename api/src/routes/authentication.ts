@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
 
 router.get('/', function (req, res, next) {
   return res.json(req.user ? req.user.authentication : {})
 })
 
-module.exports = router
+export default router

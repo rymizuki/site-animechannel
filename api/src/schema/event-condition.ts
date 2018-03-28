@@ -1,11 +1,11 @@
-const {
+import {
   INTEGER,
   DATE,
   BOOLEAN,
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
-const Event = require('./event')
+import Event from './event'
 
 const Condition = db.define('event_condition', {
   id: {
@@ -31,5 +31,4 @@ const Condition = db.define('event_condition', {
 Condition.belongsTo(Event)
 Event.hasOne(Condition)
 
-module.exports = Condition
-
+export default Condition

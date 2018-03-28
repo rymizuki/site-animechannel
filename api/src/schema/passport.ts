@@ -1,11 +1,11 @@
-const {
+import {
   INTEGER,
   STRING,
   ENUM,
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
-const User = require('./user')
+import User from './user'
 
 const Passport = db.define('passport', {
   id: {
@@ -42,4 +42,4 @@ const Passport = db.define('passport', {
 Passport.hasOne(User)
 User.belongsTo(Passport)
 
-module.exports = Passport
+export default Passport

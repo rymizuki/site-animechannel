@@ -1,13 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
 
-const { find, get, chain } = require('lodash')
+import { find, get, chain } from 'lodash'
 
-const Q = require('q')
-const Passport = require('../schema/passport')
-const Permission = require('../schema/permission')
-const User = require('../schema/user')
-const UserPermission = require('../schema/user-permission')
+import Q from 'q'
+import Passport from '../schema/passport'
+import Permission from '../schema/permission'
+import User from '../schema/user'
+import UserPermission from '../schema/user-permission'
 
 // authorize
 router.use(function (req, res, next) {
@@ -110,4 +110,4 @@ router.put('/:id/permissions', function (req, res, next) {
     })
 })
 
-module.exports = router
+export default router

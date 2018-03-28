@@ -1,12 +1,12 @@
-const {
+import {
   INTEGER,
   STRING,
   BOOLEAN,
-} = require('sequelize')
-const db = require('../infra/db')
+} from 'sequelize'
+import db from '../infra/db'
 
-const User = require('./user')
-const Permission = require('./permission')
+import User from './user'
+import Permission from './permission'
 
 const UserPermission = db.define('user_permission', {
   id: {
@@ -27,4 +27,4 @@ UserPermission.belongsTo(Permission)
 UserPermission.belongsTo(User)
 User.hasMany(UserPermission)
 
-module.exports = UserPermission
+export default UserPermission
