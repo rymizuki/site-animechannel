@@ -8,48 +8,45 @@ import EventStateEntity           from '../entities/event-state'
 import EventCandidateDatesEntity  from '../entities/event-candidate-dates'
 import EventParticipants          from '../entities/event-participants'
 
-import Participant                from '../entities/participant'
+import ParticipantEntity          from '../entities/participant'
+import EventParticipantEntity     from '../entities/participant';
 
-export default class EventRepository {
-  private id: Number
-  constructor (id: Number) {
-    this.id = id
-  }
-  fetch () {
-    return EventSchema.findById(this.id, {
-      include: [
-        EventConditionSchema,
-      ]
+export function fetch (id: Number): Promise<EventEntity> {
+  return EventSchema.findById(id, {
+    include: [
+      EventConditionSchema,
+    ]
+  })
+    .then((event) => {
+      return new EventEntity({
+        id:               event.id,
+        title:            event.title,
+        description:      event.description,
+        state:            new EventStateEntity({ type: event.status }),
+        candidate_dates:  new EventCandidateDatesEntity(
+          event.event_condition.from,
+          event.event_condition.to,
+          event.event_condition.holiday,
+        ),
+        participants:     new EventParticipants(),
+      })
     })
-      .then((event) => {
-        return {
-          title:            event.title,
-          description:      event.description,
-          state:            new EventStateEntity({ type: event.status }),
-          candidate_dates:  new EventCandidateDatesEntity(
-            event.event_condition.from,
-            event.event_condition.to,
-            event.event_condition.holiday,
-          ),
-          participants:     new EventParticipants(),
-        }
-      })
-  }
-  add (participant: Participant) {
-    return EventParticipantSchema.create({
-      eventId: this.id,
-      userId: participant.user.id,
-      name: participant.name,
-      event_participant_dates: participant.dates.map((date) => {
-        return { date: date.format('YYYY-MM-DD') }
-      })
-    }, {
-      include: [
-        EventParticipantDateSchema,
-      ]
+}
+
+export function addParticipante (event: EventEntity, participant: ParticipantEntity) {
+  return EventParticipantSchema.create({
+    eventId:                  event.id,
+    userId:                   participant.user.id,
+    name:                     participant.name,
+    event_participant_dates:  participant.dates.map((date) => {
+      return { date: date.format('YYYY-MM-DD') }
     })
-      .then(() => {
-        return this.fetch()
-      })
-  }
+  }, {
+    include: [
+      EventParticipantDateSchema,
+    ]
+  })
+    .then(() => {
+      return this.fetch(event.id)
+    })
 }

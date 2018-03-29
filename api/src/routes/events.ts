@@ -8,8 +8,8 @@ import { get, find, chain } from 'lodash'
 import Events from '../services/events'
 import EventParticipation from '../services/event-participation'
 
-import UserRepository  from '../repositories/user'
-import EventRepository from '../repositories/event'
+import * as UserRepository  from '../repositories/user'
+import * as EventRepository from '../repositories/event'
 
 import EventEntity from '../entities/event'
 
@@ -41,13 +41,12 @@ router.get('/:id', authorizeParticipant, function (req, res, next) {
     })
 })
 
-router.post('/:id/participants', authorizeParticipant, function (req, res, next) {
+router.post('/:id/participants', authorizeParticipant, async function (req, res, next) {
   const { name, accept_dates } = req.body
+  const user  = await UserRepository.fetch(get(req, 'user.authentication.user.id'))
+  const event = await EventRepository.fetch(req.params.id)
 
-  new EventParticipation(
-    new UserRepository(get(req, 'user.authentication.user.id')),
-    new EventEntity(req.params.id),
-  )
+  new EventParticipation(user, event)
     .exec(name, accept_dates)
     .then((event) => {
       return res.json(event)

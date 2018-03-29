@@ -1,25 +1,28 @@
-import UserRepository  from '../repositories/user'
-import EventRepository from '../repositories/event'
+import * as UserRepository  from '../repositories/user'
+import * as EventRepository from '../repositories/event'
 
+import UserEntity         from '../entities/user'
 import EventEntity        from '../entities/event'
 import ParticipantEntity  from '../entities/participant'
 
 // eventに参加する
 export default class EventParticipation {
-  private userRepository: UserRepository
+  private user: UserEntity
   private event: EventEntity
-  constructor (userRepository: UserRepository, event: EventEntity) {
-    this.userRepository = userRepository
+  constructor (user: UserEntity, event: EventEntity) {
+    this.user  = user
     this.event = event
   }
   async exec (name, accept_dates) {
-    const user  = await this.userRepository.fetch()
+    const user  = this.user
+    const event = this.event
 
-    // ユーザが受理
-    return this.event.accepted(new ParticipantEntity({
+    const participant = new ParticipantEntity({
       user,
       name,
       dates: accept_dates
-    }))
+    })
+
+    return EventRepository.addParticipante(event, participant)
   }
 }
