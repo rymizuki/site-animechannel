@@ -50,6 +50,7 @@ export default {
             // db -> authentication entity
             return {
               user: {
+                id:          user.id,
                 username:    passport.username,
                 displayName: passport.displayName,
                 icon_url:    passport.photo,

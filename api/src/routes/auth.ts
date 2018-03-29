@@ -1,6 +1,8 @@
 import express from 'express'
 const router = express.Router()
 
+import { get } from 'lodash'
+
 import passport from 'passport'
 import TwitterStrategy from 'passport-twitter'
 
@@ -37,7 +39,7 @@ passport.use(new TwitterStrategy({
 /* GET home page. */
 router.get('/signup', passport.authenticate('twitter'));
 router.get('/callback', passport.authenticate('twitter', { failureRedirect: '/' }), function(req, res) {
-  const authentication = req.user.authentication
+  const authentication = get(req, 'user.authentication')
   console.log('session user', authentication.user)
 
   return res.redirect(`/user/${ authentication.user.username }`)

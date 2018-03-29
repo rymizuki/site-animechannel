@@ -41,7 +41,6 @@ export default {
     return {
       form: {
         name: '',
-        accept_dates: [],
       },
     }
   },
@@ -74,20 +73,13 @@ export default {
           content.data.joinning = !content.data.joinning
         }
       })
-      this.form.accept_dates = chain(this.dateContents)
-        .filter((content) => {
-          return content.data.joining
-        })
-        .map((content) => {
-          return content.date.format('YYYY-MM-DD')
-        })
-        .value()
       this.$forceUpdate()
     },
     onSubmit () {
       this.$store.dispatch('join/exec', {
-        event,
-        data: this.form,
+        event: this.event,
+        data:  this.form,
+        dates: this.dateContents,
       })
         .then(() => {
           this.$router.push({
@@ -108,6 +100,6 @@ export default {
         },
       })
     }
-  }
+  },
 }
 </script>
