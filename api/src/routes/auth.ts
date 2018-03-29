@@ -23,7 +23,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(new TwitterStrategy({
   consumerKey,
   consumerSecret,
-  callbackURL: 'http://localhost:50200/auth/callback',
+  callbackURL: `http://${ process.env.API_HOSTNAME || 'localhost' }:50200/auth/callback`,
 }, function(token, tokenSecret, profile, done) {
   // 例えばtwitteridがDBの中に存在するかということを確認する
   // 検証結果によってdoneの書き方を以下のように指定する
