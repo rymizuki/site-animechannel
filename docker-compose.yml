@@ -4,9 +4,11 @@ services:
     build:
       context: ./proxy
       dockerfile: Dockerfile
-    links: []
+    links:
+      - app
+      - api
     ports:
-      - "50200:80"
+      - "50200:50200"
     volumes:
       - ./var/log/nginx:/var/log/nginx
     restart: always
