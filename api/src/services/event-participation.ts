@@ -23,6 +23,6 @@ export default class EventParticipation {
       dates: accept_dates
     })
 
-    return EventRepository.addParticipante(event, participant)
+    return EventRepository.addParticipant(event, participant)
   }
 }

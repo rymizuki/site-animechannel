@@ -1,6 +1,5 @@
 import EventStateEntity           from './event-state'
-import EventCandidateDatesEntity  from './event-candidate-dates'
-import EventParticipantsEntity    from './event-participants'
+import EventParticipantEntity    from './event-participant'
 import ParticipantEntity          from './participant'
 
 export default class EventEntity {
@@ -8,8 +7,8 @@ export default class EventEntity {
   title: String
   description: String
   state: EventStateEntity
-  candidate_dates: EventCandidateDatesEntity
-  participants: EventParticipantsEntity
+  candidate_dates: Array<string>
+  participants: Array<EventParticipantEntity>
   constructor ({ id, title, description, state, candidate_dates, participants }) {
     this.id               = id
     this.title            = title

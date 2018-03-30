@@ -5,11 +5,11 @@ import moment from 'moment'
 
 import { get, find, chain } from 'lodash'
 
-import Events from '../services/events'
 import EventParticipation from '../services/event-participation'
 
-import * as UserRepository  from '../repositories/user'
-import * as EventRepository from '../repositories/event'
+import * as UserRepository    from '../repositories/user'
+import * as EventsRepository  from '../repositories/events'
+import * as EventRepository   from '../repositories/event'
 
 import EventEntity from '../entities/event'
 
@@ -27,18 +27,17 @@ function authorizeParticipant (req, res, next) {
   return next()
 }
 
-router.get('/', authorizeParticipant, function (req, res, next) {
-  Events.list()
-    .then((events) => {
-      return res.json(events)
-    })
+router.get('/', authorizeParticipant, async function (req, res, next) {
+  const events = await EventsRepository.fetchRecently()
+
+  return res.json(events)
 })
 
-router.get('/:id', authorizeParticipant, function (req, res, next) {
-  Events.find(req.params.id)
-    .then((event) => {
-      return res.json(event)
-    })
+router.get('/:id', authorizeParticipant, async function (req, res, next) {
+  const event = await EventRepository.fetch(req.params.id)
+  console.log('event', event)
+
+  return res.json(event)
 })
 
 router.post('/:id/participants', authorizeParticipant, async function (req, res, next) {
@@ -57,13 +56,11 @@ router.put('/:id/participants/:user_id', function (req, res, next) {
   res.status(404).end()
 })
 
-router.post('/', authorizeManager, function (req, res, next) {
+router.post('/', authorizeManager, async function (req, res, next) {
   const data = req.body
+  const event = await EventsRepository.add(data)
 
-  Events.add(data)
-    .then((event) => {
-      return res.json({ id: event.id })
-    })
+  return res.json({ id: event.id })
 })
 
 export default router
